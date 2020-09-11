@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "brighter-days"
+    }
+  },
+  "defaultProject": "brighter-days",
+  "cli": {
+    "analytics": false
+  }
 }
