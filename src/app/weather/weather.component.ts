@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-//import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/api.service';
 import { environment } from 'src/environments/environment';
 import { from } from 'rxjs';
 
@@ -11,17 +11,19 @@ import { from } from 'rxjs';
 export class WeatherComponent implements OnInit {
 
   constructor(
-    //private api:ApiService
+    private api:ApiService
   ) { }
 
   ngOnInit(): void {
-    const data = from(fetch(`${environment.currentWeatherApi}Nairobi&appid=${environment.weatherToken}`));
-
-    data.subscribe({
-      next(response) { console.log(response); },
-      error(err) { console.error('Error: ' + err); },
-      complete() { console.log('Completed'); }
+    navigator.geolocation.getCurrentPosition((position) => { 
+      this.getWeather('',position.coords.latitude,position.coords.longitude)
     });
+  }
+
+  getWeather(place,lat,lon){
+    this.api.getWeather(place,lat,lon).subscribe((res:any)=>{
+      console.log(res)
+    }); 
   }
 
 }

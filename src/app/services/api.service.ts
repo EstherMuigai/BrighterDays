@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -15,18 +15,16 @@ export class ApiService {
   
   constructor(
     private http:HttpClient,
-    private jsonp:HttpClientJsonpModule
   ) { }
 
-  getWeather(place) {
-    this.http.jsonp(`${this.weatherApi}${place}&appid=${this.token}`, 'callback')
-    .pipe(
-      catchError((err) => { return throwError(err);}),
-    ).subscribe(data => {
-      console.log(data)
-      return JSON.stringify(data)
-    });
+  getWeather(place,lat,lon): Observable<any> {
+    return this.http.get(`${this.weatherApi}${place},lat=${lat}&lon=${lon}&appid=${this.token}`)
+      .pipe(
+        catchError(() => throwError('error when retrieving hourly forecast'))
+      );
   }
+
+
 
   
 }
